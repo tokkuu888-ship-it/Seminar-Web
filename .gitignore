@@ -11,6 +11,8 @@ ENV/
 *.egg-info/
 dist/
 build/
+**/__pycache__/
+**/*.pyc
 
 # Environment variables
 .env
