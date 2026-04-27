@@ -6,20 +6,15 @@ services:
     startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: DATABASE_URL
-        fromDatabase:
-          name: seminar-platform-db
-          property: connectionString
+        sync: false
       - key: SECRET_KEY
         generateValue: true
       - key: ALGORITHM
         value: HS256
       - key: ACCESS_TOKEN_EXPIRE_MINUTES
         value: "30"
-      - key: REDIS_URL
-        fromService:
-          type: redis
-          name: seminar-platform-redis
-          property: connectionString
+      - key: REFRESH_TOKEN_EXPIRE_DAYS
+        value: "7"
       - key: SMTP_HOST
         sync: false
       - key: SMTP_PORT
@@ -28,14 +23,17 @@ services:
         sync: false
       - key: SMTP_PASSWORD
         sync: false
+      - key: SMTP_FROM
+        sync: false
+      - key: AWS_ACCESS_KEY_ID
+        sync: false
+      - key: AWS_SECRET_ACCESS_KEY
+        sync: false
+      - key: AWS_BUCKET_NAME
+        sync: false
+      - key: AWS_REGION
+        value: us-east-1
+      - key: REDIS_URL
+        sync: false
       - key: FRONTEND_URL
-        value: https://seminar-platform-frontend.onrender.com
-
-databases:
-  - name: seminar-platform-db
-    databaseName: seminar_platform
-    user: seminar_user
-
-redis:
-  - name: seminar-platform-redis
-    maxmemoryPolicy: allkeys-lru
+        sync: false
