@@ -1,0 +1,9 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "seminar-platform-backend"
+version = "1.0.0"
+description = "PhD Seminar Platform Backend"
+requires-python = ">=3.11"
