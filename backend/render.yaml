@@ -1,0 +1,41 @@
+services:
+  - type: web
+    name: seminar-platform-backend
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: seminar-platform-db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ALGORITHM
+        value: HS256
+      - key: ACCESS_TOKEN_EXPIRE_MINUTES
+        value: "30"
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: seminar-platform-redis
+          property: connectionString
+      - key: SMTP_HOST
+        sync: false
+      - key: SMTP_PORT
+        sync: false
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASSWORD
+        sync: false
+      - key: FRONTEND_URL
+        value: https://seminar-platform-frontend.onrender.com
+
+databases:
+  - name: seminar-platform-db
+    databaseName: seminar_platform
+    user: seminar_user
+
+redis:
+  - name: seminar-platform-redis
+    maxmemoryPolicy: allkeys-lru
