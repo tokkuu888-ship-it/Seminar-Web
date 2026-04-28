@@ -33,7 +33,8 @@ class Settings(BaseSettings):
     CORS_ORIGINS: List[str] = [
         "https://seminar-web-three.vercel.app",
         "http://localhost:5173",
-        "http://localhost:3000"
+        "http://localhost:3000",
+        "https://seminar-web.onrender.com"
     ]
     
     class Config:
