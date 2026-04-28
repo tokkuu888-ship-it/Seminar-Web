@@ -6,6 +6,6 @@ services:
     startCommand: npm run preview
     envVars:
       - key: VITE_API_URL
-        value: https://seminar-web.onrender.com/api/v1
+        value: https://seminar-web.onrender.com
       - key: VITE_APP_NAME
         value: PhD Seminar Platform
