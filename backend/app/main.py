@@ -2,8 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .config import settings
 from .api.v1.router import api_router
-from .db.base import engine
-from .models import Base
+from .db.base import engine, Base
 
 app = FastAPI(
     title="PhD Seminar Platform",
