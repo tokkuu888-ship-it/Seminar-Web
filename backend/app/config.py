@@ -6,6 +6,14 @@ class Settings(BaseSettings):
     # Database
     DATABASE_URL: str = "postgresql://user:password@localhost:5432/dbname"
     
+    @property
+    def SYNC_DATABASE_URL(self) -> str:
+        """Convert postgres:// to postgresql:// for SQLAlchemy 2.0 compatibility"""
+        url = self.DATABASE_URL
+        if url.startswith("postgres://"):
+            url = url.replace("postgres://", "postgresql://", 1)
+        return url
+    
     # Security
     SECRET_KEY: str = "change-this-secret-key-in-production"
     ALGORITHM: str = "HS256"
