@@ -1,5 +1,5 @@
 from pydantic_settings import BaseSettings
-from typing import Optional
+from typing import Optional, List
 
 
 class Settings(BaseSettings):
@@ -30,6 +30,11 @@ class Settings(BaseSettings):
     
     # Frontend
     FRONTEND_URL: str = "http://localhost:3000"
+    CORS_ORIGINS: List[str] = [
+        "https://seminar-web-three.vercel.app",
+        "http://localhost:5173",
+        "http://localhost:3000"
+    ]
     
     class Config:
         env_file = ".env"
