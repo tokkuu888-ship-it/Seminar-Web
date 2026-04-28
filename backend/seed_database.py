@@ -108,8 +108,11 @@ def seed_database():
         print("\n✅ Database seeded successfully!")
         print("\nDemo accounts:")
         print("-" * 50)
-        for user_data in demo_users:
-            print(f"  {user_data['email']} / {user_data['password'].replace('123', '***')}123 ({user_data['role']})")
+        print("  admin@seminar.com / admin*** (ADMIN)")
+        print("  dean@seminar.com / dean*** (DEAN)")
+        print("  coordinator@seminar.com / coordinator*** (COORDINATOR)")
+        print("  faculty@seminar.com / faculty*** (FACULTY)")
+        print("  student@seminar.com / student*** (PHD_CANDIDATE)")
         
     except Exception as e:
         db.rollback()
