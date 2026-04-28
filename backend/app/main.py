@@ -2,6 +2,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .config import settings
 from .api.v1.router import api_router
+from .db.base import engine
+from .models import Base
 
 app = FastAPI(
     title="PhD Seminar Platform",
@@ -16,6 +18,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Create database tables
+Base.metadata.create_all(bind=engine)
 
 app.include_router(api_router, prefix="/api/v1")
 
