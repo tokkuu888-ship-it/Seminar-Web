@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from .config import settings
 from .api.v1.router import api_router
 from .db.base import engine, Base
+from .models import workflow  # noqa: F401  # ensure workflow tables are registered
 
 app = FastAPI(
     title="PhD Seminar Platform",
