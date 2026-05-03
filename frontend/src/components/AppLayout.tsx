@@ -9,19 +9,13 @@ interface AppLayoutProps {
   children: ReactNode
 }
 
-const navItems = [
-  { to: '/dashboard', label: 'Dashboard' },
-  { to: '/seminars', label: 'Seminars' },
-  { to: '/seminars/schedule', label: 'Schedule' },
-  { to: '/availability', label: 'Availability' },
-  { to: '/reports/submit', label: 'Submit Report' },
-  { to: '/feedback/submit', label: 'Submit Feedback' },
-  { to: '/profile', label: 'Profile' },
-]
-
 function AppLayout({ title, subtitle, children }: AppLayoutProps) {
   const navigate = useNavigate()
   const { user, logout } = useAuthStore()
+  const navItems = [
+    { to: '/dashboard', label: 'Dashboard' },
+    { to: '/profile', label: 'Profile' },
+  ]
 
   const handleLogout = async () => {
     await authService.logout()

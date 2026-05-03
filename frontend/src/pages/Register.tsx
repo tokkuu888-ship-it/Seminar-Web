@@ -11,7 +11,7 @@ function Register() {
     password: '',
     first_name: '',
     last_name: '',
-    role: 'student',
+    role: 'PHD_CANDIDATE',
     department: '',
     phone: ''
   })
@@ -91,9 +91,12 @@ function Register() {
               className="w-full px-3 py-2 border rounded-lg"
               required
             >
-              <option value="student">Student</option>
-              <option value="faculty">Faculty</option>
-              <option value="admin">Admin</option>
+              <option value="DEAN">DEAN (Seminar Chair)</option>
+              <option value="COORDINATOR">COORDINATOR (Senior PhD)</option>
+              <option value="TECHNICAL_MODERATOR">TECHNICAL_MODERATOR (Junior PhD)</option>
+              <option value="FACULTY">FACULTY (Review Panel)</option>
+              <option value="PHD_CANDIDATE">PHD_CANDIDATE (PhD Student)</option>
+              <option value="ADMIN">ADMIN</option>
             </select>
           </div>
           <div className="mb-4">

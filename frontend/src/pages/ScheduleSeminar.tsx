@@ -14,6 +14,8 @@ function ScheduleSeminar() {
     duration_minutes: 90,
     location: '',
     meeting_link: '',
+    presenter_id: '',
+    technical_moderator_id: '',
   })
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -23,7 +25,7 @@ function ScheduleSeminar() {
 
     try {
       await seminarService.create(formData)
-      navigate('/seminars')
+      navigate('/dashboard/coordinator')
     } catch (error: any) {
       setErrorMessage(error?.response?.data?.detail || 'Failed to schedule seminar.')
     } finally {
@@ -67,6 +69,20 @@ function ScheduleSeminar() {
             placeholder="Location"
             value={formData.location}
             onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+          />
+          <input
+            className="rounded border px-3 py-2"
+            placeholder="presenter_id (UUID) - PhD student"
+            required
+            value={formData.presenter_id}
+            onChange={(e) => setFormData({ ...formData, presenter_id: e.target.value })}
+          />
+          <input
+            className="rounded border px-3 py-2"
+            placeholder="technical_moderator_id (UUID) - Junior PhD"
+            required
+            value={formData.technical_moderator_id}
+            onChange={(e) => setFormData({ ...formData, technical_moderator_id: e.target.value })}
           />
         </div>
         <textarea

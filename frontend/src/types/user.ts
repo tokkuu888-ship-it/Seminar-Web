@@ -1,4 +1,10 @@
-export type Role = 'DEAN' | 'COORDINATOR' | 'FACULTY' | 'PHD_CANDIDATE' | 'ADMIN'
+export type Role =
+  | 'DEAN'
+  | 'COORDINATOR'
+  | 'TECHNICAL_MODERATOR'
+  | 'FACULTY'
+  | 'PHD_CANDIDATE'
+  | 'ADMIN'
 
 export interface User {
   id: string
