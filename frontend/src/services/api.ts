@@ -11,10 +11,11 @@ const api = axios.create({
 })
 
 api.interceptors.request.use((config) => {
-  // Get token from Zustand store instead of localStorage directly
   const { token } = useAuthStore.getState()
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`
+  const persistedToken = token || localStorage.getItem('access_token')
+
+  if (persistedToken) {
+    config.headers.Authorization = `Bearer ${persistedToken}`
   }
   return config
 })

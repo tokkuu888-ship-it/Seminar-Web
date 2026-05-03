@@ -13,8 +13,10 @@ export const authService = {
       },
     })
     
-    // Store token in auth store instead of localStorage
-    useAuthStore.getState().setToken(response.data.access_token)
+    const token = response.data.access_token
+    useAuthStore.getState().setToken(token)
+    localStorage.setItem('access_token', token)
+    localStorage.setItem('refresh_token', response.data.refresh_token)
     
     return response.data
   },
@@ -26,6 +28,8 @@ export const authService = {
 
   async logout() {
     useAuthStore.getState().logout()
+    localStorage.removeItem('access_token')
+    localStorage.removeItem('refresh_token')
   },
 
   async getCurrentUser() {
