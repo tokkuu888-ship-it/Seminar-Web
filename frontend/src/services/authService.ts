@@ -1,4 +1,5 @@
 import api from './api'
+import { useAuthStore } from '../store/authStore'
 
 export const authService = {
   async login(email: string, password: string) {
@@ -12,8 +13,8 @@ export const authService = {
       },
     })
     
-    localStorage.setItem('access_token', response.data.access_token)
-    localStorage.setItem('refresh_token', response.data.refresh_token)
+    // Store token in auth store instead of localStorage
+    useAuthStore.getState().setToken(response.data.access_token)
     
     return response.data
   },
@@ -24,8 +25,7 @@ export const authService = {
   },
 
   async logout() {
-    localStorage.removeItem('access_token')
-    localStorage.removeItem('refresh_token')
+    useAuthStore.getState().logout()
   },
 
   async getCurrentUser() {
