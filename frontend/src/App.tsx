@@ -53,6 +53,7 @@ function App() {
   const token = useAuthStore((state) => state.token)
   const user = useAuthStore((state) => state.user)
   const setUser = useAuthStore((state) => state.setUser)
+  const logout = useAuthStore((state) => state.logout)
 
   // If we restored a session from localStorage but user profile is missing,
   // fetch it so role-based UI works after refresh.
@@ -62,9 +63,12 @@ function App() {
       .getCurrentUser()
       .then((u) => setUser(u))
       .catch(() => {
-        // If the token is invalid, ProtectedRoute will redirect to /login.
+        // Clear stale/invalid persisted auth so login/register routes work again.
+        logout()
+        localStorage.removeItem('access_token')
+        localStorage.removeItem('refresh_token')
       })
-  }, [isAuthenticated, token, user, setUser])
+  }, [isAuthenticated, token, user, setUser, logout])
 
   return (
     <BrowserRouter>

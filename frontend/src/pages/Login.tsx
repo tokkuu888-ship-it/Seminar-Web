@@ -55,7 +55,9 @@ function Login() {
 
       navigate('/dashboard')
     } catch (error: any) {
-      if (error?.code === 'ERR_NETWORK') {
+      if (error?.code === 'ECONNABORTED') {
+        setErrorMessage('Request timed out. Backend may be cold-starting; please try again.')
+      } else if (error?.code === 'ERR_NETWORK') {
         setErrorMessage('Cannot reach backend API. Start backend server and verify VITE_API_URL.')
       } else {
         const detail = error?.response?.data?.detail

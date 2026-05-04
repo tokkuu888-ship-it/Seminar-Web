@@ -24,9 +24,15 @@ function Register() {
       await authService.register(formData)
       navigate('/login')
     } catch (error: any) {
-      setErrorMessage(
-        error?.response?.data?.detail || 'Registration failed. Please review your details.'
-      )
+      if (error?.code === 'ERR_NETWORK') {
+        setErrorMessage('Cannot reach backend API. Verify VITE_API_URL and backend deployment.')
+      } else if (error?.code === 'ECONNABORTED') {
+        setErrorMessage('Request timed out. Backend may be cold-starting; try again in a few seconds.')
+      } else {
+        setErrorMessage(
+          error?.response?.data?.detail || `Registration failed (${error?.response?.status || 'unknown error'}).`
+        )
+      }
     } finally {
       setIsSubmitting(false)
     }
