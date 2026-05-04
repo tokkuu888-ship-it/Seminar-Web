@@ -18,12 +18,12 @@ function Login() {
 
     const checkApi = async () => {
       try {
-        // Lightweight probe against auth endpoint.
-        await api.get('/auth/me')
+        // Lightweight probe against the dedicated health endpoint.
+        await api.get('/health')
         if (!cancelled) setApiReachable(true)
       } catch (error: any) {
-        // 401 still means API is reachable (not authenticated yet).
         if (!cancelled) {
+          // If auth/me returns 401, the API is reachable but not authenticated.
           if (error?.response?.status === 401) setApiReachable(true)
           else setApiReachable(false)
         }

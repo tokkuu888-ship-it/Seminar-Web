@@ -12,3 +12,8 @@ api_router.include_router(users_router, prefix="/users", tags=["Users"])
 api_router.include_router(seminars_router, prefix="/seminars", tags=["Seminars"])
 api_router.include_router(availability_router, prefix="", tags=["Availability"])
 api_router.include_router(dashboard_router, prefix="", tags=["Dashboard"])
+
+
+@api_router.get("/health", tags=["Health"])
+async def health_check():
+    return {"status": "healthy"}
