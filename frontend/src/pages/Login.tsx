@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { authService } from '../services/authService'
 import { useAuthStore } from '../store/authStore'
-import api from '../services/api'
+import api, { API_URL } from '../services/api'
 
 function Login() {
   const navigate = useNavigate()
@@ -12,7 +12,6 @@ function Login() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
   const [apiReachable, setApiReachable] = useState<boolean | null>(null)
-  const apiBaseUrl = (import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1') as string
 
   useEffect(() => {
     let cancelled = false
@@ -58,7 +57,7 @@ function Login() {
       if (error?.code === 'ECONNABORTED') {
         setErrorMessage('Request timed out. Backend may be cold-starting; please try again.')
       } else if (error?.code === 'ERR_NETWORK') {
-        setErrorMessage('Cannot reach backend API. Start backend server and verify VITE_API_URL.')
+        setErrorMessage('Cannot reach backend API. Verify VITE_API_URL and backend deployment.')
       } else {
         const detail = error?.response?.data?.detail
         const status = error?.response?.status
@@ -82,7 +81,7 @@ function Login() {
                 : 'border-red-200 bg-red-50 text-red-700'
           }`}
         >
-          API: <span className="font-mono">{apiBaseUrl}</span>
+          API: <span className="font-mono">{API_URL}</span>
           <span className="ml-2">
             {apiReachable === null ? '(checking...)' : apiReachable ? '(reachable)' : '(unreachable)'}
           </span>
