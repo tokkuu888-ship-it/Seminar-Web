@@ -4,23 +4,37 @@ import { authService } from '../services/authService'
 
 function Register() {
   const navigate = useNavigate()
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
   const [formData, setFormData] = useState({
     email: '',
     password: '',
     first_name: '',
     last_name: '',
-    role: 'student',
+    role: 'PHD_CANDIDATE',
     department: '',
     phone: ''
   })
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setErrorMessage('')
+    setIsSubmitting(true)
     try {
       await authService.register(formData)
       navigate('/login')
-    } catch (error) {
-      console.error('Registration failed:', error)
+    } catch (error: any) {
+      if (error?.code === 'ERR_NETWORK') {
+        setErrorMessage('Cannot reach backend API. Verify VITE_API_URL and backend deployment.')
+      } else if (error?.code === 'ECONNABORTED') {
+        setErrorMessage('Request timed out. Backend may be cold-starting; try again in a few seconds.')
+      } else {
+        setErrorMessage(
+          error?.response?.data?.detail || `Registration failed (${error?.response?.status || 'unknown error'}).`
+        )
+      }
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -30,6 +44,11 @@ function Register() {
         <h1 className="text-2xl font-bold mb-6 text-center">PhD Seminar Platform</h1>
         <h2 className="text-xl font-semibold mb-4 text-center">Register</h2>
         <form onSubmit={handleSubmit}>
+          {errorMessage && (
+            <div className="mb-4 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+              {errorMessage}
+            </div>
+          )}
           <div className="mb-4">
             <label className="block text-gray-700 mb-2">Email</label>
             <input
@@ -78,9 +97,12 @@ function Register() {
               className="w-full px-3 py-2 border rounded-lg"
               required
             >
-              <option value="student">Student</option>
-              <option value="faculty">Faculty</option>
-              <option value="admin">Admin</option>
+              <option value="DEAN">DEAN (Seminar Chair)</option>
+              <option value="COORDINATOR">COORDINATOR (Senior PhD)</option>
+              <option value="TECHNICAL_MODERATOR">TECHNICAL_MODERATOR (Junior PhD)</option>
+              <option value="FACULTY">FACULTY (Review Panel)</option>
+              <option value="PHD_CANDIDATE">PHD_CANDIDATE (PhD Student)</option>
+              <option value="ADMIN">ADMIN</option>
             </select>
           </div>
           <div className="mb-4">
@@ -103,9 +125,10 @@ function Register() {
           </div>
           <button
             type="submit"
+            disabled={isSubmitting}
             className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 mb-4"
           >
-            Register
+            {isSubmitting ? 'Registering...' : 'Register'}
           </button>
           <p className="text-center text-gray-600">
             Already have an account? <Link to="/login" className="text-blue-600 hover:underline">Login</Link>

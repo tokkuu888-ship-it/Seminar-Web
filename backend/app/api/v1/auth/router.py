@@ -3,6 +3,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from ....db.base import get_db
 from ....models.user import User
+from ....dependencies import get_current_active_user
 from ....schemas.user import UserCreate, UserResponse, Token
 from ....core.security import verify_password, get_password_hash, create_access_token, create_refresh_token
 
@@ -62,5 +63,5 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = 
 
 
 @router.get("/me", response_model=UserResponse)
-async def get_current_user_info(current_user: User = Depends(get_db)):
+async def get_current_user_info(current_user: User = Depends(get_current_active_user)):
     return current_user
