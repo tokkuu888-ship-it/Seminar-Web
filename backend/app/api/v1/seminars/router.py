@@ -5,7 +5,7 @@ from datetime import datetime
 from uuid import UUID
 from ....db.base import get_db
 from ....models.seminar import Seminar
-from ....dependencies import get_current_active_user
+from ....dependencies import get_current_user
 from ....core.rbac import Role, require_role
 from ....models.user import User
 from ....models.workflow import (
@@ -637,7 +637,7 @@ async def submit_progress_report(
 async def get_progress_reports_for_faculty(
     seminar_id: str,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_active_user),
+    current_user: User = Depends(get_current_user),
 ):
     seminar_uuid = UUID(str(seminar_id))
     seminar = db.query(Seminar).filter(Seminar.id == seminar_uuid).first()
