@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from typing import List, Dict, Any
 
 from ....db.base import get_db
-from ....dependencies import get_current_active_user
+from ....dependencies import get_current_user
 from ....core.rbac import Role, require_role
 from ....models.user import User
 from ....models.workflow import AvailabilityPoll, AvailabilityPollResponse
@@ -16,7 +16,7 @@ router = APIRouter()
 async def send_availability_poll(
     payload: Dict[str, Any],
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_active_user),
+    current_user: User = Depends(get_current_user),
 ):
     poll = AvailabilityPoll(
         coordinator_id=current_user.id,
@@ -35,7 +35,7 @@ async def respond_to_poll(
     poll_id: str,
     payload: Dict[str, Any],
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_active_user),
+    current_user: User = Depends(get_current_user),
 ):
     poll = db.query(AvailabilityPoll).filter(AvailabilityPoll.id == poll_id).first()
     if not poll:
@@ -73,7 +73,7 @@ async def respond_to_poll(
 async def poll_results_summary(
     poll_id: str,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_active_user),
+    current_user: User = Depends(get_current_user),
 ):
     poll = db.query(AvailabilityPoll).filter(AvailabilityPoll.id == poll_id).first()
     if not poll:

@@ -42,7 +42,7 @@ async def get_seminars(
     skip: int = 0,
     limit: int = 100,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_active_user)
+    current_user: User = Depends(get_current_user)
 ):
     seminars = db.query(Seminar).offset(skip).limit(limit).all()
     return [
@@ -66,7 +66,7 @@ async def get_seminars(
 async def create_seminar(
     seminar_data: dict,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_active_user)
+    current_user: User = Depends(get_current_user)
 ):
     new_seminar = Seminar(
         title=seminar_data.get("title"),
@@ -107,7 +107,7 @@ async def assign_faculty_panel(
     seminar_id: str,
     payload: Dict[str, Any],
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_active_user),
+    current_user: User = Depends(get_current_user),
 ):
     seminar_uuid = UUID(str(seminar_id))
     seminar = db.query(Seminar).filter(Seminar.id == seminar_uuid).first()
@@ -139,7 +139,7 @@ async def approve_or_reject_schedule(
     seminar_id: str,
     payload: Dict[str, Any],
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_active_user),
+    current_user: User = Depends(get_current_user),
 ):
     seminar_uuid = UUID(str(seminar_id))
     seminar = db.query(Seminar).filter(Seminar.id == seminar_uuid).first()
@@ -177,7 +177,7 @@ async def update_meeting_link(
     seminar_id: str,
     payload: Dict[str, Any],
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_active_user),
+    current_user: User = Depends(get_current_user),
 ):
     seminar_uuid = UUID(str(seminar_id))
     seminar = db.query(Seminar).filter(Seminar.id == seminar_uuid).first()
@@ -243,7 +243,7 @@ async def create_technical_check(
     seminar_id: str,
     payload: Dict[str, Any],
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_active_user),
+    current_user: User = Depends(get_current_user),
 ):
     seminar_uuid = UUID(str(seminar_id))
     seminar = db.query(Seminar).filter(Seminar.id == seminar_uuid).first()
@@ -341,7 +341,7 @@ async def upload_technical_materials(
     seminar_id: str,
     payload: Dict[str, Any],
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_active_user),
+    current_user: User = Depends(get_current_user),
 ):
     seminar_uuid = UUID(str(seminar_id))
     seminar = db.query(Seminar).filter(Seminar.id == seminar_uuid).first()
@@ -374,7 +374,7 @@ async def report_technical_issue(
     seminar_id: str,
     payload: Dict[str, Any],
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_active_user),
+    current_user: User = Depends(get_current_user),
 ):
     seminar_uuid = UUID(str(seminar_id))
     seminar = db.query(Seminar).filter(Seminar.id == seminar_uuid).first()
@@ -382,7 +382,7 @@ async def report_technical_issue(
         raise HTTPException(status_code=404, detail="Seminar not found")
 
     role_assignment = db.query(SeminarRoleAssignment).filter(SeminarRoleAssignment.seminar_id == seminar_uuid).first()
-    if not role_assignment or role_assignment.technical_moderator_id != current_user.id:
+    if not role_assignment or role_assignment.technical_moderator_id != current_user.id: # type: ignore
         raise HTTPException(status_code=403, detail="Only the assigned technical moderator can report issues")
 
     issue_type = payload.get("issue_type") or "OTHER"
@@ -407,7 +407,7 @@ async def student_prepare_presentation(
     seminar_id: str,
     payload: Dict[str, Any],
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_active_user),
+    current_user: User = Depends(get_current_user),
 ):
     seminar_uuid = UUID(str(seminar_id))
     seminar = db.query(Seminar).filter(Seminar.id == seminar_uuid).first()
@@ -445,7 +445,7 @@ async def viva_participate(
     seminar_id: str,
     payload: Dict[str, Any],
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_active_user),
+    current_user: User = Depends(get_current_user),
 ):
     seminar_uuid = UUID(str(seminar_id))
     seminar = db.query(Seminar).filter(Seminar.id == seminar_uuid).first()
@@ -482,7 +482,7 @@ async def send_notification(
     seminar_id: str,
     payload: Dict[str, Any],
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_active_user),
+    current_user: User = Depends(get_current_user),
 ):
     seminar_uuid = UUID(str(seminar_id))
     seminar = db.query(Seminar).filter(Seminar.id == seminar_uuid).first()
@@ -523,7 +523,7 @@ async def override_status(
     seminar_id: str,
     payload: Dict[str, Any],
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_active_user),
+    current_user: User = Depends(get_current_user),
 ):
     seminar_uuid = UUID(str(seminar_id))
     seminar = db.query(Seminar).filter(Seminar.id == seminar_uuid).first()
@@ -555,7 +555,7 @@ async def mark_attendance(
     seminar_id: str,
     payload: Dict[str, Any],
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_active_user),
+    current_user: User = Depends(get_current_user),
 ):
     seminar_uuid = UUID(str(seminar_id))
     seminar = db.query(Seminar).filter(Seminar.id == seminar_uuid).first()
@@ -597,7 +597,7 @@ async def submit_progress_report(
     seminar_id: str,
     payload: Dict[str, Any],
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_active_user),
+    current_user: User = Depends(get_current_user),
 ):
     seminar_uuid = UUID(str(seminar_id))
     seminar = db.query(Seminar).filter(Seminar.id == seminar_uuid).first()
@@ -682,7 +682,7 @@ async def submit_feedback(
     seminar_id: str,
     payload: Dict[str, Any],
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_active_user),
+    current_user: User = Depends(get_current_user),
 ):
     seminar_uuid = UUID(str(seminar_id))
     # Enforce: only assigned faculty can submit feedback.
